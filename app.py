@@ -3,9 +3,8 @@ from datetime import datetime
 from sheet_helper import tambah_masuk_barang_supplier, tambah_masuk_gudang, tambah_keluar_customer, update_stock_gudang, get_stock_gudang
 
 st.set_page_config(page_title="Manajemen Stok Gudang", layout="wide")
-if st.session_state.get("reset_form"):
-    st.session_state.clear()
-    st.rerun()
+if "reset_form" not in st.session_state:
+    st.session_state["reset_form"] = False
 
 st.title("📦 Aplikasi Manajemen Stok Gudang")
 
@@ -17,34 +16,43 @@ menu = st.sidebar.selectbox("Menu", [
 # Masuk Barang: Semua Form Digabung
 if menu == "Masuk Barang (Supplier)":
     st.header("📥 Barang Masuk dari Supplier")
+
+    # Reset semua field kalau flag reset_form True
+    if st.session_state["reset_form"]:
+        for key in list(st.session_state.keys()):
+            if key not in ["reset_form", "menu"]:  # Jangan reset menu dan flag sendiri
+                del st.session_state[key]
+        st.session_state["reset_form"] = False
+        st.rerun()
+
     with st.form("form_masuk_barang"):
         st.subheader("🧾 Data dari Supplier")
-        no_sj = st.text_input("No. SJ Supplier")
-        so_supplier = st.text_input("SO Supplier")
-        nama_barang_supplier = st.text_input("Nama Barang (Supplier)")
-        jumlah_supplier = st.number_input("Jumlah (Supplier)", min_value=1, step=1)
-        tgl_sj_supplier = st.date_input("Tanggal SJ (Supplier)", value=datetime.today())
-        ket_supplier = st.text_area("Keterangan (Supplier)")
+        no_sj = st.text_input("No. SJ Supplier", key="no_sj")
+        so_supplier = st.text_input("SO Supplier", key="so_supplier")
+        nama_barang_supplier = st.text_input("Nama Barang (Supplier)", key="nama_barang_supplier")
+        jumlah_supplier = st.number_input("Jumlah (Supplier)", min_value=1, step=1, key="jumlah_supplier")
+        tgl_sj_supplier = st.date_input("Tanggal SJ (Supplier)", value=datetime.today(), key="tgl_sj_supplier")
+        ket_supplier = st.text_area("Keterangan (Supplier)", key="ket_supplier")
 
         st.subheader("🏠 Masuk ke Gudang")
-        nama_barang_gudang = st.text_input("Nama Barang (Gudang)")
-        kode_barang_gudang = st.text_input("Kode Barang")
-        jumlah_gudang = st.number_input("Jumlah (Gudang)", min_value=1, step=1)
-        so_gudang = st.text_input("SO Gudang")
-        sj_gudang = st.text_input("No. SJ Gudang")
-        po_gudang = st.text_input("PO Gudang")
+        nama_barang_gudang = st.text_input("Nama Barang (Gudang)", key="nama_barang_gudang")
+        kode_barang_gudang = st.text_input("Kode Barang", key="kode_barang_gudang")
+        jumlah_gudang = st.number_input("Jumlah (Gudang)", min_value=1, step=1, key="jumlah_gudang")
+        so_gudang = st.text_input("SO Gudang", key="so_gudang")
+        sj_gudang = st.text_input("No. SJ Gudang", key="sj_gudang")
+        po_gudang = st.text_input("PO Gudang", key="po_gudang")
         tgl_sj_gudang = st.date_input("Tanggal SJ (Gudang)", value=datetime.today(), key="tgl_masuk_gudang")
-        ket_gudang = st.text_area("Keterangan (Gudang)")
+        ket_gudang = st.text_area("Keterangan (Gudang)", key="ket_gudang")
 
         st.subheader("📤 Keluar ke Customer")
-        nama_barang_customer = st.text_input("Nama Barang (Customer)")
-        kode_barang_customer = st.text_input("Kode Barang (Customer)")
-        jumlah_customer = st.number_input("Jumlah (Customer)", min_value=1, step=1)
-        so_customer = st.text_input("SO Customer")
-        sj_customer = st.text_input("No. SJ Customer")
-        po_customer = st.text_input("PO Customer")
+        nama_barang_customer = st.text_input("Nama Barang (Customer)", key="nama_barang_customer")
+        kode_barang_customer = st.text_input("Kode Barang (Customer)", key="kode_barang_customer")
+        jumlah_customer = st.number_input("Jumlah (Customer)", min_value=1, step=1, key="jumlah_customer")
+        so_customer = st.text_input("SO Customer", key="so_customer")
+        sj_customer = st.text_input("No. SJ Customer", key="sj_customer")
+        po_customer = st.text_input("PO Customer", key="po_customer")
         tgl_sj_customer = st.date_input("Tanggal SJ (Customer)", value=datetime.today(), key="tgl_keluar")
-        ket_customer = st.text_area("Keterangan (Customer)")
+        ket_customer = st.text_area("Keterangan (Customer)", key="ket_customer")
 
         submitted = st.form_submit_button("Tambah Masuk Barang")
         if submitted:
@@ -58,7 +66,6 @@ if menu == "Masuk Barang (Supplier)":
             st.info(f"- Keluar Customer: {msg3}")
             st.session_state["reset_form"] = True
             st.rerun()
-
 
 elif menu == "Keluar (Customer)":
     st.header("📤 Keluar Barang ke Customer")
