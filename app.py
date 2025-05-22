@@ -73,7 +73,7 @@ elif menu == "Keluar (Customer)":
 
     if st.button("🔍 Cek Barang di Stok"):
         update_msg = update_stock_gudang()
-        st.info(f"🔄 {update_msg}")
+        #st.info(f"🔄 {update_msg}")
 
         df_stock = get_stock_gudang()
         data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
