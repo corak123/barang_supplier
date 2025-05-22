@@ -52,6 +52,8 @@ if menu == "Masuk Barang (Supplier)":
             st.info(f"- Supplier: {msg1}")
             st.info(f"- Masuk Gudang: {msg2}")
             st.info(f"- Keluar Customer: {msg3}")
+            st.session_state.clear()  # 🔄 Clear semua session state agar form kosong
+            st.rerun()
 
 
 elif menu == "Keluar (Customer)":
