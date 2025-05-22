@@ -69,8 +69,8 @@ def update_stock_gudang():
 
         # Proses barang keluar
         for row in keluar_data:
-            kode = row["Kode Barang"]
-            jumlah = int(row["Jumlah"])
+            kode = row["kode_barang"]
+            jumlah = int(row["jumlah"])
             if kode in stock:
                 stock[kode]["keluar"] += jumlah
 
