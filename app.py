@@ -59,3 +59,9 @@ elif menu == "Update Stock Gudang":
     if st.button("Update Sekarang"):
         msg = update_stock_gudang()
         st.success(msg)
+
+        df_stock = get_stock_gudang()
+        if not df_stock.empty:
+            st.dataframe(df_stock)
+        else:
+            st.info("Data stock gudang kosong atau gagal dimuat.")
