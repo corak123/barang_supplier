@@ -56,27 +56,43 @@ if menu == "Masuk Barang (Supplier)":
 elif menu == "Keluar (Customer)":
     st.header("📤 Keluar Barang ke Customer")
 
-    # Form input data keluar
-    with st.form("form_keluar_customer"):
-        nama_barang = st.text_input("Nama Barang")
-        kode_barang = st.text_input("Kode Barang")
-        jumlah = st.number_input("Jumlah", min_value=1, step=1)
-        so = st.text_input("SO")
-        sj = st.text_input("SJ")
-        po = st.text_input("PO")
-        tgl_sj = st.date_input("Tanggal SJ", datetime.today())
-        keterangan = st.text_area("Keterangan")
+    # Step 1: Input awal
+    nama_barang = st.text_input("Nama Barang")
+    kode_barang = st.text_input("Kode Barang")
+    cek_btn = st.button("🔍 Cek Barang di Stok")
 
-        submitted = st.form_submit_button("Simpan Keluar")
+    # Step 2: Cek stok
+    if cek_btn and kode_barang:
+        df_stock = get_stock_gudang()
+        data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
 
-        if submitted:
-            # Ubah tanggal ke format string, misal yyyy-mm-dd
-            tgl_sj_str = tgl_sj.strftime("%Y-%m-%d")
-            msg = tambah_keluar_customer(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj_str, keterangan)
-            if msg.startswith("✅"):
-                st.success(msg)
+        if not data_barang.empty:
+            sisa = int(data_barang.iloc[0]["Sisa"])
+            st.success(f"✅ Barang ditemukan. Sisa stok: {sisa}")
+
+            # Step 3: Form lanjutan jika stok tersedia
+            if sisa > 0:
+                with st.form("form_keluar_customer"):
+                    jumlah = st.number_input("Jumlah Keluar", min_value=1, max_value=sisa, step=1)
+                    so = st.text_input("SO")
+                    sj = st.text_input("SJ")
+                    po = st.text_input("PO")
+                    tgl_sj = st.date_input("Tanggal SJ", datetime.today())
+                    keterangan = st.text_area("Keterangan")
+
+                    submitted = st.form_submit_button("Simpan Keluar")
+                    if submitted:
+                        tgl_sj_str = tgl_sj.strftime("%Y-%m-%d")
+                        msg = tambah_keluar_customer(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj_str, keterangan)
+                        if msg.startswith("✅"):
+                            st.success(msg)
+                        else:
+                            st.error(msg)
             else:
-                st.error(msg)
+                st.warning("⚠️ Stok 0, tidak bisa mengeluarkan barang.")
+        else:
+            st.error("❌ Barang tidak ditemukan di stock gudang.")
+
 
 # Update Stock Gudang
 elif menu == "Stock Gudang":
