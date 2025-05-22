@@ -2,70 +2,58 @@ import streamlit as st
 from datetime import datetime
 from sheet_helper import tambah_masuk_barang_supplier, tambah_masuk_gudang, tambah_keluar_customer, update_stock_gudang
 
-
 st.set_page_config(page_title="Manajemen Stok Gudang", layout="wide")
 st.title("📦 Aplikasi Manajemen Stok Gudang")
 
 menu = st.sidebar.selectbox("Menu", [
     "Masuk Barang (Supplier)",
-    "Masuk ke Gudang",
-    "Keluar ke Customer",
     "Update Stock Gudang"
 ])
 
-# 1. Masuk Barang dari Supplier
+# Masuk Barang: Semua Form Digabung
 if menu == "Masuk Barang (Supplier)":
     st.header("📥 Barang Masuk dari Supplier")
-    with st.form("form_supplier"):
+    with st.form("form_masuk_barang"):
+        st.subheader("🧾 Data dari Supplier")
         no_sj = st.text_input("No. SJ Supplier")
-        so = st.text_input("SO")
-        nama_barang = st.text_input("Nama Barang")
-        jumlah = st.number_input("Jumlah", min_value=1, step=1)
-        tgl_sj = st.date_input("Tanggal SJ", value=datetime.today())
-        keterangan = st.text_area("Keterangan")
+        so_supplier = st.text_input("SO Supplier")
+        nama_barang_supplier = st.text_input("Nama Barang (Supplier)")
+        jumlah_supplier = st.number_input("Jumlah (Supplier)", min_value=1, step=1)
+        tgl_sj_supplier = st.date_input("Tanggal SJ (Supplier)", value=datetime.today())
+        ket_supplier = st.text_area("Keterangan (Supplier)")
 
-        submitted = st.form_submit_button("Simpan")
+        st.subheader("🏠 Masuk ke Gudang")
+        nama_barang_gudang = st.text_input("Nama Barang (Gudang)")
+        kode_barang_gudang = st.text_input("Kode Barang")
+        jumlah_gudang = st.number_input("Jumlah (Gudang)", min_value=1, step=1)
+        so_gudang = st.text_input("SO Gudang")
+        sj_gudang = st.text_input("No. SJ Gudang")
+        po_gudang = st.text_input("PO Gudang")
+        tgl_sj_gudang = st.date_input("Tanggal SJ (Gudang)", value=datetime.today(), key="tgl_masuk_gudang")
+        ket_gudang = st.text_area("Keterangan (Gudang)")
+
+        st.subheader("📤 Keluar ke Customer")
+        nama_barang_customer = st.text_input("Nama Barang (Customer)")
+        kode_barang_customer = st.text_input("Kode Barang (Customer)")
+        jumlah_customer = st.number_input("Jumlah (Customer)", min_value=1, step=1)
+        so_customer = st.text_input("SO Customer")
+        sj_customer = st.text_input("No. SJ Customer")
+        po_customer = st.text_input("PO Customer")
+        tgl_sj_customer = st.date_input("Tanggal SJ (Customer)", value=datetime.today(), key="tgl_keluar")
+        ket_customer = st.text_area("Keterangan (Customer)")
+
+        submitted = st.form_submit_button("Tambah Masuk Barang")
         if submitted:
-            msg = tambah_masuk_barang_supplier(no_sj, so, nama_barang, jumlah, str(tgl_sj), keterangan)
-            st.success(msg)
+            msg1 = tambah_masuk_barang_supplier(no_sj, so_supplier, nama_barang_supplier, jumlah_supplier, str(tgl_sj_supplier), ket_supplier)
+            msg2 = tambah_masuk_gudang(nama_barang_gudang, kode_barang_gudang, jumlah_gudang, so_gudang, sj_gudang, po_gudang, str(tgl_sj_gudang), ket_gudang)
+            msg3 = tambah_keluar_customer(nama_barang_customer, kode_barang_customer, jumlah_customer, so_customer, sj_customer, po_customer, str(tgl_sj_customer), ket_customer)
 
-# 2. Masuk ke Gudang
-elif menu == "Masuk ke Gudang":
-    st.header("🏠 Barang Masuk ke Gudang")
-    with st.form("form_gudang"):
-        nama_barang = st.text_input("Nama Barang")
-        kode_barang = st.text_input("Kode Barang")
-        jumlah = st.number_input("Jumlah", min_value=1, step=1)
-        so = st.text_input("SO")
-        sj = st.text_input("No. SJ")
-        po = st.text_input("PO")
-        tgl_sj = st.date_input("Tanggal SJ", value=datetime.today(), key="tgl_masuk_gudang")
-        keterangan = st.text_area("Keterangan")
+            st.success("✅ Data berhasil ditambahkan:")
+            st.info(f"- Supplier: {msg1}")
+            st.info(f"- Masuk Gudang: {msg2}")
+            st.info(f"- Keluar Customer: {msg3}")
 
-        submitted = st.form_submit_button("Simpan")
-        if submitted:
-            msg = tambah_masuk_gudang(nama_barang, kode_barang, jumlah, so, sj, po, str(tgl_sj), keterangan)
-            st.success(msg)
-
-# 3. Keluar ke Customer
-elif menu == "Keluar ke Customer":
-    st.header("📤 Barang Keluar ke Customer")
-    with st.form("form_keluar"):
-        nama_barang = st.text_input("Nama Barang")
-        kode_barang = st.text_input("Kode Barang")
-        jumlah = st.number_input("Jumlah", min_value=1, step=1)
-        so = st.text_input("SO")
-        sj = st.text_input("No. SJ")
-        po = st.text_input("PO")
-        tgl_sj = st.date_input("Tanggal SJ", value=datetime.today(), key="tgl_keluar")
-        keterangan = st.text_area("Keterangan")
-
-        submitted = st.form_submit_button("Simpan")
-        if submitted:
-            msg = tambah_keluar_customer(nama_barang, kode_barang, jumlah, so, sj, po, str(tgl_sj), keterangan)
-            st.success(msg)
-
-# 4. Update Stock Gudang
+# Update Stock Gudang
 elif menu == "Update Stock Gudang":
     st.header("🔄 Update Stock Gudang")
     if st.button("Update Sekarang"):
