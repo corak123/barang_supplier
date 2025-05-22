@@ -6,7 +6,7 @@ st.set_page_config(page_title="Manajemen Stok Gudang", layout="wide")
 st.title("📦 Aplikasi Manajemen Stok Gudang")
 
 menu = st.sidebar.selectbox("Menu", [
-    "Masuk Barang (Supplier)",
+    "Masuk Barang (Supplier)", "Keluar (Customer)"
     "Stock Gudang"
 ])
 
@@ -52,6 +52,31 @@ if menu == "Masuk Barang (Supplier)":
             st.info(f"- Supplier: {msg1}")
             st.info(f"- Masuk Gudang: {msg2}")
             st.info(f"- Keluar Customer: {msg3}")
+
+elif menu == "Keluar (Customer)":
+    st.header("📤 Keluar Barang ke Customer")
+
+    # Form input data keluar
+    with st.form("form_keluar_customer"):
+        nama_barang = st.text_input("Nama Barang")
+        kode_barang = st.text_input("Kode Barang")
+        jumlah = st.number_input("Jumlah", min_value=1, step=1)
+        so = st.text_input("SO")
+        sj = st.text_input("SJ")
+        po = st.text_input("PO")
+        tgl_sj = st.date_input("Tanggal SJ", datetime.today())
+        keterangan = st.text_area("Keterangan")
+
+        submitted = st.form_submit_button("Simpan Keluar")
+
+        if submitted:
+            # Ubah tanggal ke format string, misal yyyy-mm-dd
+            tgl_sj_str = tgl_sj.strftime("%Y-%m-%d")
+            msg = tambah_keluar_customer(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj_str, keterangan)
+            if msg.startswith("✅"):
+                st.success(msg)
+            else:
+                st.error(msg)
 
 # Update Stock Gudang
 elif menu == "Stock Gudang":
