@@ -54,8 +54,8 @@ if menu == "Masuk Barang (Supplier)":
             st.info(f"- Keluar Customer: {msg3}")
 
 # Update Stock Gudang
-elif menu == "Update Stock Gudang":
-    st.header("🔄 Update Stock Gudang")
+elif menu == "Stock Gudang":
+    st.header("🔄 Stock Gudang")
     
     if st.button("Update Sekarang"):
         msg = update_stock_gudang()
