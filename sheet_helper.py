@@ -40,6 +40,15 @@ def tambah_masuk_gudang(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, ke
     except Exception as e:
         return f"❌ Gagal simpan ke gudang: {e}"
 
+def get_stock_gudang():
+    try:
+        data = stock_sheet.get_all_records()
+        df = pd.DataFrame(data)
+        return df
+    except Exception as e:
+        st.error(f"Gagal mengambil data stock: {e}")
+        return pd.DataFrame()  # kosong jika gagal
+
 # Fungsi: Tambah Keluar ke Customer
 def tambah_keluar_customer(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, keterangan):
     try:
