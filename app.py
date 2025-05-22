@@ -53,50 +53,66 @@ if menu == "Masuk Barang (Supplier)":
             st.info(f"- Masuk Gudang: {msg2}")
             st.info(f"- Keluar Customer: {msg3}")
 
+
 elif menu == "Keluar (Customer)":
     st.header("📤 Keluar Barang ke Customer")
 
-    # Step 1: Input awal
-    nama_barang = st.text_input("Nama Barang")
-    kode_barang = st.text_input("Kode Barang")
-    cek_btn = st.button("🔍 Cek Barang di Stok")
+    # Inisialisasi session state
+    if "cek_barang_done" not in st.session_state:
+        st.session_state.cek_barang_done = False
+    if "stok_sisa" not in st.session_state:
+        st.session_state.stok_sisa = 0
+    if "nama_barang_checked" not in st.session_state:
+        st.session_state.nama_barang_checked = ""
+    if "kode_barang_checked" not in st.session_state:
+        st.session_state.kode_barang_checked = ""
 
-    # Step 2: Saat cek barang ditekan
-    if cek_btn and kode_barang:
-        # Update stok dulu
+    # Step 1: Input nama dan kode barang
+    nama_barang = st.text_input("Nama Barang", value=st.session_state.nama_barang_checked)
+    kode_barang = st.text_input("Kode Barang", value=st.session_state.kode_barang_checked)
+
+    if st.button("🔍 Cek Barang di Stok"):
         update_msg = update_stock_gudang()
         st.info(f"🔄 {update_msg}")
 
-        # Ambil data terbaru
         df_stock = get_stock_gudang()
         data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
 
         if not data_barang.empty:
             sisa = int(data_barang.iloc[0]["Sisa"])
+            st.session_state.stok_sisa = sisa
+            st.session_state.cek_barang_done = True
+            st.session_state.nama_barang_checked = nama_barang
+            st.session_state.kode_barang_checked = kode_barang
             st.success(f"✅ Barang ditemukan. Sisa stok: {sisa}")
-
-            # Step 3: Form lanjutan jika stok tersedia
-            if sisa > 0:
-                with st.form("form_keluar_customer"):
-                    jumlah = st.number_input("Jumlah Keluar", min_value=1, max_value=sisa, step=1)
-                    so = st.text_input("SO")
-                    sj = st.text_input("SJ")
-                    po = st.text_input("PO")
-                    tgl_sj = st.date_input("Tanggal SJ", datetime.today())
-                    keterangan = st.text_area("Keterangan")
-
-                    submitted = st.form_submit_button("Simpan Keluar")
-                    if submitted:
-                        tgl_sj_str = tgl_sj.strftime("%Y-%m-%d")
-                        msg = tambah_keluar_customer(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj_str, keterangan)
-                        if msg.startswith("✅"):
-                            st.success(msg)
-                        else:
-                            st.error(msg)
-            else:
-                st.warning("⚠️ Stok 0, tidak bisa mengeluarkan barang.")
         else:
+            st.session_state.cek_barang_done = False
             st.error("❌ Barang tidak ditemukan di stock gudang.")
+
+    # Step 2: Jika sudah dicek dan stok tersedia, tampilkan form
+    if st.session_state.cek_barang_done and st.session_state.stok_sisa > 0:
+        with st.form("form_keluar_customer"):
+            jumlah = st.number_input("Jumlah Keluar", min_value=1, max_value=st.session_state.stok_sisa, step=1)
+            so = st.text_input("SO")
+            sj = st.text_input("SJ")
+            po = st.text_input("PO")
+            tgl_sj = st.date_input("Tanggal SJ", datetime.today())
+            keterangan = st.text_area("Keterangan")
+
+            submitted = st.form_submit_button("Simpan Keluar")
+            if submitted:
+                tgl_sj_str = tgl_sj.strftime("%Y-%m-%d")
+                msg = tambah_keluar_customer(
+                    st.session_state.nama_barang_checked,
+                    st.session_state.kode_barang_checked,
+                    jumlah, so, sj, po, tgl_sj_str, keterangan
+                )
+                if msg.startswith("✅"):
+                    st.success(msg)
+                    # Reset session state agar form tidak muncul lagi
+                    st.session_state.cek_barang_done = False
+                else:
+                    st.error(msg)
 
 
 # Update Stock Gudang
