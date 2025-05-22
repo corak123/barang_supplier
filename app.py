@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import datetime
-from sheet_helper import tambah_masuk_barang_supplier, tambah_masuk_gudang, tambah_keluar_customer, update_stock_gudang
+from sheet_helper import tambah_masuk_barang_supplier, tambah_masuk_gudang, tambah_keluar_customer, update_stock_gudang, get_stock_gudang
 
 st.set_page_config(page_title="Manajemen Stok Gudang", layout="wide")
 st.title("📦 Aplikasi Manajemen Stok Gudang")
