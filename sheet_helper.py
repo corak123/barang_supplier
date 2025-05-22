@@ -60,9 +60,9 @@ def update_stock_gudang():
 
         # Proses barang masuk
         for row in masuk_data:
-            kode = row["Kode Barang"]
-            nama = row["Nama Barang"]
-            jumlah = int(row["Jumlah"])
+            kode = row["kode_barang"]
+            nama = row["nama_barang"]
+            jumlah = int(row["jumlah"])
             if kode not in stock:
                 stock[kode] = {"nama": nama, "masuk": 0, "keluar": 0}
             stock[kode]["masuk"] += jumlah
