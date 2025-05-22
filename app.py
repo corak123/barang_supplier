@@ -6,7 +6,7 @@ st.set_page_config(page_title="Manajemen Stok Gudang", layout="wide")
 st.title("📦 Aplikasi Manajemen Stok Gudang")
 
 menu = st.sidebar.selectbox("Menu", [
-    "Masuk Barang (Supplier)", "Keluar (Customer)"
+    "Masuk Barang (Supplier)", "Keluar (Customer)",
     "Stock Gudang"
 ])
 
