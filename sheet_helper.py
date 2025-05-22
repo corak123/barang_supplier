@@ -90,6 +90,6 @@ def update_stock_gudang():
         for kode, info in stock.items():
             sisa = info["masuk"] - info["keluar"]
             stock_sheet.append_row([kode, info["nama"], info["masuk"], info["keluar"], sisa])
-        return "✅ Stock berhasil diupdate."
+        return 
     except Exception as e:
         return f"❌ Gagal update stock: {e}"
