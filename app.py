@@ -7,7 +7,7 @@ st.title("📦 Aplikasi Manajemen Stok Gudang")
 
 menu = st.sidebar.selectbox("Menu", [
     "Masuk Barang (Supplier)",
-    "Update Stock Gudang"
+    "Stock Gudang"
 ])
 
 # Masuk Barang: Semua Form Digabung
