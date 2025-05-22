@@ -63,6 +63,8 @@ elif menu == "Keluar (Customer)":
 
     # Step 2: Cek stok
     if cek_btn and kode_barang:
+        msg = update_stock_gudang()
+        st.success(msg)
         df_stock = get_stock_gudang()
         data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
 
