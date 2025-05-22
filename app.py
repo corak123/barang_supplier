@@ -3,6 +3,10 @@ from datetime import datetime
 from sheet_helper import tambah_masuk_barang_supplier, tambah_masuk_gudang, tambah_keluar_customer, update_stock_gudang, get_stock_gudang
 
 st.set_page_config(page_title="Manajemen Stok Gudang", layout="wide")
+if st.session_state.get("reset_form"):
+    st.session_state.clear()
+    st.rerun()
+
 st.title("📦 Aplikasi Manajemen Stok Gudang")
 
 menu = st.sidebar.selectbox("Menu", [
@@ -52,7 +56,7 @@ if menu == "Masuk Barang (Supplier)":
             st.info(f"- Supplier: {msg1}")
             st.info(f"- Masuk Gudang: {msg2}")
             st.info(f"- Keluar Customer: {msg3}")
-            st.session_state.clear()  # 🔄 Clear semua session state agar form kosong
+            st.session_state["reset_form"] = True
             st.rerun()
 
 
