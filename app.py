@@ -110,6 +110,8 @@ elif menu == "Keluar (Customer)":
                 if msg.startswith("✅"):
                     st.success(msg)
                     # Reset session state agar form tidak muncul lagi
+                    st.session_state.clear()  # 🔄 Clear semua session state agar form kosong
+                    st.rerun()
                     st.session_state.cek_barang_done = False
                 else:
                     st.error(msg)
