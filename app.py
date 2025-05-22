@@ -6,7 +6,7 @@ from sheet_helper import tambah_masuk_barang_supplier, tambah_masuk_gudang, tamb
 st.set_page_config(page_title="Manajemen Stok Gudang", layout="wide")
 st.title("📦 Aplikasi Manajemen Stok Gudang")
 
-menu = st.sidebar.radio("Menu", [
+menu = st.sidebar.selectbox("Menu", [
     "Masuk Barang (Supplier)",
     "Masuk ke Gudang",
     "Keluar ke Customer",
