@@ -61,11 +61,13 @@ elif menu == "Keluar (Customer)":
     kode_barang = st.text_input("Kode Barang")
     cek_btn = st.button("🔍 Cek Barang di Stok")
 
-    # Step 2: Cek stok
+    # Step 2: Saat cek barang ditekan
     if cek_btn and kode_barang:
-        msg = update_stock_gudang()
-        st.success(msg)
-        st.rerun() 
+        # Update stok dulu
+        update_msg = update_stock_gudang()
+        st.info(f"🔄 {update_msg}")
+
+        # Ambil data terbaru
         df_stock = get_stock_gudang()
         data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
 
