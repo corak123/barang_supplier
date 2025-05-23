@@ -59,7 +59,7 @@ if menu == "Masuk Barang (Supplier)":
         if submitted:
             msg1 = tambah_masuk_barang_supplier(no_sj, so_supplier, nama_barang_supplier, jumlah_supplier, str(tgl_sj_supplier), ket_supplier)
             msg2 = tambah_masuk_gudang(nama_barang_supplier, kode_barang_gudang, jumlah_gudang, so_gudang, sj_gudang, po_gudang, str(tgl_sj_gudang), ket_gudang)
-            msg3 = tambah_keluar_customer(nama_barang_supplier, kode_barang_gudang, jumlah_customer, so_customer, sj_customer, po_customer, str(tgl_sj_customer), ket_customer)
+            msg3 = tambah_keluar_cust(nama_barang_supplier, kode_barang_gudang, jumlah_customer, so_customer, sj_customer, po_customer, str(tgl_sj_customer), ket_customer)
 
             st.success("✅ Data berhasil ditambahkan:")
             st.info(f"- Supplier: {msg1}")
