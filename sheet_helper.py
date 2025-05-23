@@ -45,6 +45,8 @@ def get_stock_gudang():
     try:
         data = stock_sheet.get_all_records()
         df = pd.DataFrame(data)
+        if "kode_barang" in df.columns:
+            df["kode_barang"] = df["kode_barang"].astype(str).str.strip()
         return df
     except Exception as e:
         st.error(f"Gagal mengambil data stock: {e}")
