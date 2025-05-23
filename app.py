@@ -83,7 +83,7 @@ elif menu == "Keluar (Customer)":
 
     # Step 1: Input nama dan kode barang
     nama_barang = st.text_input("Nama Barang", value=st.session_state.nama_barang_checked)
-    kode_barang = st.text_input("Kode Barang", value=st.session_state.kode_barang_checked)
+    kode_barang = str(st.text_input("Kode Barang", value=st.session_state.kode_barang_checked))
 
     if st.button("🔍 Cek Barang di Stok"):
         update_msg = update_stock_gudang()
