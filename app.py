@@ -36,7 +36,8 @@ if menu == "Masuk Barang (Supplier)":
 
         st.subheader("🏠 Masuk ke Gudang")
         #nama_barang_gudang = st.text_input("Nama Barang (Gudang)", key="nama_barang_gudang")
-        kode_barang_gudang = st.text_input("Kode Barang", key="kode_barang_gudang")
+        #kode_barang_gudang = st.text_input("Kode Barang", key="kode_barang_gudang")
+        kode_barang_gudang = str(st.text_input("Kode Barang", key="kode_barang_gudang"))
         jumlah_gudang = st.number_input("Jumlah (Gudang)", min_value=0, step=1, key="jumlah_gudang")
         so_gudang = st.text_input("SO Gudang", key="so_gudang")
         sj_gudang = st.text_input("No. SJ Gudang", key="sj_gudang")
