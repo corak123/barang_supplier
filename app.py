@@ -35,7 +35,7 @@ if menu == "Masuk Barang (Supplier)":
         ket_supplier = st.text_area("Keterangan (Supplier)", key="ket_supplier")
 
         st.subheader("🏠 Masuk ke Gudang")
-        nama_barang_gudang = st.text_input("Nama Barang (Gudang)", key="nama_barang_supplier")
+        #nama_barang_gudang = st.text_input("Nama Barang (Gudang)", key="nama_barang_gudang")
         kode_barang_gudang = st.text_input("Kode Barang", key="kode_barang_gudang")
         jumlah_gudang = st.number_input("Jumlah (Gudang)", min_value=0, step=1, key="jumlah_gudang")
         so_gudang = st.text_input("SO Gudang", key="so_gudang")
@@ -45,8 +45,8 @@ if menu == "Masuk Barang (Supplier)":
         ket_gudang = st.text_area("Keterangan (Gudang)", key="ket_gudang")
 
         st.subheader("📤 Keluar ke Customer")
-        nama_barang_customer = st.text_input("Nama Barang (Customer)", key="nama_barang_supplier")
-        kode_barang_customer = st.text_input("Kode Barang (Customer)", key="kode_barang_customer")
+        #nama_barang_customer = st.text_input("Nama Barang (Customer)", key="nama_barang_customer")
+        #kode_barang_customer = st.text_input("Kode Barang (Customer)", key="kode_barang_customer")
         jumlah_customer = st.number_input("Jumlah (Customer)", min_value=0, step=1, key="jumlah_customer")
         so_customer = st.text_input("SO Customer", key="so_customer")
         sj_customer = st.text_input("No. SJ Customer", key="sj_customer")
@@ -57,8 +57,8 @@ if menu == "Masuk Barang (Supplier)":
         submitted = st.form_submit_button("Tambah Masuk Barang")
         if submitted:
             msg1 = tambah_masuk_barang_supplier(no_sj, so_supplier, nama_barang_supplier, jumlah_supplier, str(tgl_sj_supplier), ket_supplier)
-            msg2 = tambah_masuk_gudang(nama_barang_gudang, kode_barang_gudang, jumlah_gudang, so_gudang, sj_gudang, po_gudang, str(tgl_sj_gudang), ket_gudang)
-            msg3 = tambah_keluar_customer(nama_barang_customer, kode_barang_customer, jumlah_customer, so_customer, sj_customer, po_customer, str(tgl_sj_customer), ket_customer)
+            msg2 = tambah_masuk_gudang(nama_barang_supplier, kode_barang_gudang, jumlah_gudang, so_gudang, sj_gudang, po_gudang, str(tgl_sj_gudang), ket_gudang)
+            msg3 = tambah_keluar_customer(nama_barang_supplier, kode_barang_gudang, jumlah_customer, so_customer, sj_customer, po_customer, str(tgl_sj_customer), ket_customer)
 
             st.success("✅ Data berhasil ditambahkan:")
             st.info(f"- Supplier: {msg1}")
