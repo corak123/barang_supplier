@@ -20,6 +20,7 @@ masuk_barang_sheet = sheet.worksheet("masuk_barang_supplier")
 masuk_gudang_sheet = sheet.worksheet("masuk_gudang")
 keluar_sheet = sheet.worksheet("keluar")
 stock_sheet = sheet.worksheet("stock_gudang")
+keluar_cust_sheet = sheet.worksheet("keluar_cust")
 
 # Fungsi: Tambah Masuk Barang Supplier
 def tambah_masuk_barang_supplier(no_sj, so, nama_barang, jumlah, tgl_sj, keterangan):
@@ -56,6 +57,16 @@ def get_stock_gudang():
 def tambah_keluar_customer(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, keterangan):
     try:
         keluar_sheet.append_row([
+            nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, keterangan
+        ])
+        return "✅ Barang berhasil dikeluarkan ke customer."
+    except Exception as e:
+        return f"❌ Gagal simpan data keluar: {e}"
+
+
+def tambah_keluar_cust(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, keterangan):
+    try:
+        keluar_cust_sheet.append_row([
             nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, keterangan
         ])
         return "✅ Barang berhasil dikeluarkan ke customer."
