@@ -87,9 +87,13 @@ elif menu == "Keluar (Customer)":
 
     if st.button("🔍 Cek Barang di Stok"):
         update_msg = update_stock_gudang()
-        #st.info(f"🔄 {update_msg}")
-
+        # Saat ambil data dari sheet
         df_stock = get_stock_gudang()
+        df_stock["Kode Barang"] = df_stock["Kode Barang"].astype(str).str.strip()
+        
+        # Input dari user
+        kode_barang = str(st.text_input("Masukkan Kode Barang")).strip()
+        # Pencarian
         data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
 
         if not data_barang.empty:
