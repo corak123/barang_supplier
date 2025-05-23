@@ -92,7 +92,7 @@ elif menu == "Keluar (Customer)":
         df_stock["Kode Barang"] = df_stock["Kode Barang"].astype(str).str.strip()
         
         # Input dari user
-        kode_barang = str(st.text_input("Masukkan Kode Barang")).strip()
+        #kode_barang = str(st.text_input("Masukkan Kode Barang")).strip()
         # Pencarian
         data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
 
