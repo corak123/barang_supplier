@@ -22,6 +22,13 @@ keluar_sheet = sheet.worksheet("keluar")
 stock_sheet = sheet.worksheet("stock_gudang")
 keluar_cust_sheet = sheet.worksheet("keluar_cust")
 
+
+def reset_keluar_customer_state():
+    st.session_state.cek_barang_done = False
+    st.session_state.stok_sisa = 0
+    st.session_state.nama_barang_checked = ""
+    st.session_state.kode_barang_checked = ""
+
 # Fungsi: Tambah Masuk Barang Supplier
 def tambah_masuk_barang_supplier(no_sj, so, nama_barang, jumlah, tgl_sj, keterangan):
     try:
