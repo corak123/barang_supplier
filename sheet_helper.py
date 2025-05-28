@@ -46,9 +46,19 @@ def get_stock_gudang():
     try:
         data = stock_sheet.get_all_records()
         df = pd.DataFrame(data)
-        if "kode_barang" in df.columns:
-            df["kode_barang"] = df["kode_barang"].astype(str).str.strip()
-        return df
+        if "Kode Barang" in df_stock.columns:
+            df_stock["Kode Barang"] = df_stock["Kode Barang"].astype(str).str.strip()
+            
+            # Cek apakah kode yang dimasukkan ada di stok
+            if kode_input in df_stock["Kode Barang"].values:
+                # Proses jika ada
+                st.success("Barang ditemukan di stok!")
+                # tampilkan info barang jika perlu
+            else:
+                st.warning("Kode barang tidak ditemukan di stok.")
+        else:
+            st.error("Kolom 'Kode Barang' tidak ditemukan di data stok.")
+            st.write("Kolom yang tersedia:", df_stock.columns.tolist())
     except Exception as e:
         st.error(f"Gagal mengambil data stock: {e}")
         return pd.DataFrame()  # kosong jika gagal
