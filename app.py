@@ -89,12 +89,18 @@ elif menu == "Keluar (Customer)":
         update_msg = update_stock_gudang()
         # Saat ambil data dari sheet
         df_stock = get_stock_gudang()
-        df_stock["Kode Barang"] = df_stock["Kode Barang"].astype(str).str.strip()
-        
-        # Input dari user
-        #kode_barang = str(st.text_input("Masukkan Kode Barang")).strip()
-        # Pencarian
-        data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
+        # df_stock["Kode Barang"] = df_stock["Kode Barang"].astype(str).str.strip()
+        # # Pencarian
+        # data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
+
+        if not df_stock.empty and "Kode Barang" in df_stock.columns:
+            df_stock["Kode Barang"] = df_stock["Kode Barang"].astype(str).str.strip()
+            data_barang = df_stock[df_stock["Kode Barang"] == kode_barang]
+        else:
+            # Jika dataframe kosong atau kolom tidak ada
+            data_barang = pd.DataFrame()  # dataframe kosong supaya variabel tetap ada
+            st.info("Data stock kosong atau kolom 'Kode Barang' tidak ditemukan.")
+
 
         if not data_barang.empty:
             sisa = int(data_barang.iloc[0]["Sisa"])
