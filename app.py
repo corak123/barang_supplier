@@ -146,8 +146,14 @@ elif menu == "Stock Gudang":
     
     # Tampilkan tabel stock (baik setelah reload maupun saat pertama kali buka)
     df_stock = get_stock_gudang()
+
     if not df_stock.empty:
-        st.dataframe(df_stock)
+        if "Kode Barang" in df_stock.columns:
+            df_stock["Kode Barang"] = df_stock["Kode Barang"].astype(str).str.strip()
+            st.dataframe(df_stock)
+        else:
+            st.warning("Kolom 'Kode Barang' tidak ditemukan dalam data stock.")
     else:
         st.info("Data stock gudang kosong atau gagal dimuat.")
+
 
