@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from sheet_helper import tambah_masuk_barang_supplier, tambah_masuk_gudang, tambah_keluar_customer, update_stock_gudang, get_stock_gudang, tambah_keluar_cust
+from sheet_helper import tambah_masuk_barang_supplier, tambah_masuk_gudang, tambah_keluar_customer, update_stock_gudang, get_stock_gudang, tambah_keluar_cust, reset_keluar_customer_state
 
 st.set_page_config(page_title="Manajemen Stok Gudang", layout="wide")
 if "reset_form" not in st.session_state:
@@ -134,6 +134,7 @@ elif menu == "Keluar (Customer)":
                 )
                 if msg.startswith("✅"):
                     st.success(msg)
+                    reset_keluar_customer_state()
                     # Reset session state agar form tidak muncul lagi
                     st.session_state.clear()  # 🔄 Clear semua session state agar form kosong
                     st.rerun()
