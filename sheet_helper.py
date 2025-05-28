@@ -42,26 +42,29 @@ def tambah_masuk_gudang(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, ke
     except Exception as e:
         return f"❌ Gagal simpan ke gudang: {e}"
 
-def get_stock_gudang():
+def get_stock_gudang(kode_input):
     try:
         data = stock_sheet.get_all_records()
         df = pd.DataFrame(data)
-        if "Kode Barang" in df_stock.columns:
-            df_stock["Kode Barang"] = df_stock["Kode Barang"].astype(str).str.strip()
-            
-            # Cek apakah kode yang dimasukkan ada di stok
-            if kode_input in df_stock["Kode Barang"].values:
-                # Proses jika ada
+        
+        if "Kode Barang" in df.columns:
+            df["Kode Barang"] = df["Kode Barang"].astype(str).str.strip()
+            kode_input = kode_input.strip()  # bersihin input juga
+
+            if kode_input in df["Kode Barang"].values:
                 st.success("Barang ditemukan di stok!")
                 # tampilkan info barang jika perlu
             else:
                 st.warning("Kode barang tidak ditemukan di stok.")
         else:
             st.error("Kolom 'Kode Barang' tidak ditemukan di data stok.")
-            st.write("Kolom yang tersedia:", df_stock.columns.tolist())
+            st.write("Kolom yang tersedia:", df.columns.tolist())
+
+        return df  # agar bisa dipakai di tempat lain juga
     except Exception as e:
         st.error(f"Gagal mengambil data stock: {e}")
         return pd.DataFrame()  # kosong jika gagal
+
 
 # Fungsi: Tambah Keluar ke Customer
 def tambah_keluar_customer(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, keterangan):
