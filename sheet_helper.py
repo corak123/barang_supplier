@@ -45,8 +45,11 @@ def tambah_masuk_gudang(nama_barang, kode_barang, jumlah, so, sj, po, tgl_sj, ke
 def get_stock_gudang(kode_input=None):
     try:
         data = stock_sheet.get_all_records()
-        df = pd.DataFrame(data)
+        if not data:
+            st.info("Data stock gudang kosong di sheet.")
+            return pd.DataFrame()
         
+        df = pd.DataFrame(data)
         if "Kode Barang" not in df.columns:
             st.error("Kolom 'Kode Barang' tidak ditemukan di data stok.")
             st.write("Kolom yang tersedia:", df.columns.tolist())
@@ -58,12 +61,10 @@ def get_stock_gudang(kode_input=None):
             kode_input = kode_input.strip()
             if kode_input in df["Kode Barang"].values:
                 st.success("Barang ditemukan di stok!")
-                # Bisa tambahkan return info detail barang di sini jika perlu
             else:
                 st.warning("Kode barang tidak ditemukan di stok.")
         
         return df
-    
     except Exception as e:
         st.error(f"Gagal mengambil data stock: {e}")
         return pd.DataFrame()
